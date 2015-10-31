@@ -36,7 +36,7 @@ class mysql::params {
   }
 
   if ($::lsbmajdistrelease == '7' and $::osfamily == 'RedHat') {
-    $service = 'mysql'
+    $service = 'mariadb'
   } else {
     $service = $::operatingsystem ? {
       /(?i:Debian|Ubuntu|Mint)/ => 'mysql',
