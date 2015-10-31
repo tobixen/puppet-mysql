@@ -35,10 +35,14 @@ class mysql::params {
     default                   => 'mysql',
   }
 
-  $service = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => 'mysql',
-    /(?i:FreeBsd)/            => 'mysql-server',
-    default                   => 'mysqld',
+  if ($::lsbmajdistrelease == '7' and $::osfamily == 'RedHat') {
+    $service = 'mysql'
+  } else {
+    $service = $::operatingsystem ? {
+      /(?i:Debian|Ubuntu|Mint)/ => 'mysql',
+      /(?i:FreeBsd)/            => 'mysql-server',
+      default                   => 'mysqld',
+    }
   }
 
   $service_status = $::operatingsystem ? {
