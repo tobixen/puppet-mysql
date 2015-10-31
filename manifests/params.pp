@@ -21,9 +21,13 @@ class mysql::params {
 
   ### Application related parameters
 
-  $package = $::operatingsystem ? {
-    /(?i:FreeBSD)/ => 'databases/mysql56-server',
-    default        => 'mysql-server',
+  if ($::lsbmajdistrelease == '7' and $::osfamily == 'RedHat') {
+    $package = 'mariadb-server'
+  } else {
+    $package = $::operatingsystem ? {
+      /(?i:FreeBSD)/ => 'databases/mysql56-server',
+      default        => 'mysql-server',
+    }
   }
 
   $package_client = $::operatingsystem ? {
