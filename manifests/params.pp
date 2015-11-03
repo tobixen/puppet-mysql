@@ -61,9 +61,14 @@ class mysql::params {
     default => 'mysql',
   }
 
-  $config_dir = $::operatingsystem ? {
-    /(?i:Debian|Ubuntu|Mint)/ => '/etc/mysql',
-    default                   => '/etc/mysql',
+
+  if ($::lsbmajdistrelease == '7' and $::osfamily == 'RedHat') {
+    $configdir => '/etc/my.cnf.d'
+  } else {
+    $config_dir = $::operatingsystem ? {
+      /(?i:Debian|Ubuntu|Mint)/ => '/etc/mysql',
+      default                   => '/etc/mysql',
+    }
   }
 
   $config_file = $::operatingsystem ? {
@@ -97,12 +102,17 @@ class mysql::params {
     default => '/var/lib/mysql',
   }
 
-  $log_dir = $::operatingsystem ? {
-    default => '/var/log/',
-  }
+  if ($::lsbmajdistrelease == '7' and $::osfamily == 'RedHat') {
+    $log_dir = '/var/log/mariadb'
+    $log_file = '/var/log/mariadb/mariadb.log'
+  } else {
+    $log_dir = $::operatingsystem ? {
+      default => '/var/log/',
+    }
 
-  $log_file = $::operatingsystem ? {
-    default => '/var/log/mysqld.log',
+    $log_file = $::operatingsystem ? {
+      default => '/var/log/mysqld.log',
+    }
   }
 
   $port = '3306'
