@@ -63,7 +63,7 @@ class mysql::params {
 
 
   if ($::lsbmajdistrelease == '7' and $::osfamily == 'RedHat') {
-    $configdir => '/etc/my.cnf.d'
+    $configdir = '/etc/my.cnf.d'
   } else {
     $config_dir = $::operatingsystem ? {
       /(?i:Debian|Ubuntu|Mint)/ => '/etc/mysql',
